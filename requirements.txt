@@ -1,0 +1,15 @@
+# Strata — development environment (library + demo chatbot + benchmark runner).
+#
+# Library users should NOT use this file. Install from PyPI instead:
+#     pip install strata-memory              # core
+#     pip install "strata-memory[all]"       # every optional feature
+#
+# This file exists for contributors working in a clone:
+#     pip install -e ".[all,dev]"  -r requirements.txt
+
+# --- demo chatbot (chatbot/app.py) — not needed by the library ---
+streamlit>=1.36
+openai>=1.40
+
+# --- benchmark runner (run_benchmarks.py) ---
+# rich and python-dotenv already ship as core deps

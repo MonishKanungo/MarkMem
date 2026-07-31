@@ -1,0 +1,28 @@
+[
+  {
+    "sample_id": "fixture-1",
+    "conversation": {
+      "speaker_a": "Alice",
+      "speaker_b": "Bob",
+      "session_1_date_time": "1:00 pm on 5 May, 2023",
+      "session_1": [
+        {"speaker": "Alice", "text": "Guess what — I just adopted a golden retriever puppy named Biscuit!"},
+        {"speaker": "Bob", "text": "That's wonderful! How old is Biscuit?"},
+        {"speaker": "Alice", "text": "Twelve weeks old. I also started a new job at Meridian Analytics last Monday."},
+        {"speaker": "Bob", "text": "Congrats on the job! I've been training for the Lisbon marathon myself."}
+      ],
+      "session_2_date_time": "4:30 pm on 8 June, 2023",
+      "session_2": [
+        {"speaker": "Alice", "text": "Biscuit chewed through my headphones today, the little menace."},
+        {"speaker": "Bob", "text": "Ha! I finished the Lisbon marathon in four hours and twelve minutes."},
+        {"speaker": "Alice", "text": "Amazing! To celebrate my first month at Meridian Analytics I baked a lemon cake.", "blip_caption": "a lemon cake on a wooden table"}
+      ]
+    },
+    "qa": [
+      {"question": "What is the name of Alice's puppy?", "answer": "Biscuit", "category": 4, "evidence": ["D1:1"]},
+      {"question": "Where did Alice start working?", "answer": "Meridian Analytics", "category": 4, "evidence": ["D1:3"]},
+      {"question": "What did Bob do in June 2023?", "answer": "finished the Lisbon marathon", "category": 2, "evidence": ["D2:2"]},
+      {"question": "What color is Alice's car?", "adversarial_answer": "Not mentioned in the conversation", "category": 5, "evidence": []}
+    ]
+  }
+]

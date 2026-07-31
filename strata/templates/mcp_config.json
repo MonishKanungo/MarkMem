@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "strata": {
+      "command": "python",
+      "args": ["-m", "strata.mcp_server"],
+      "env": {
+        "STRATA_REPO": "./my-memory"
+      }
+    }
+  }
+}

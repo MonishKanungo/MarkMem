@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strata-memory"
+version = "0.4.0"
+authors = [
+  { name = "Monish Kanungo", email = "monishkanungo@gmail.com" }
+]
+description = "Git-native memory layer for any chatbot: Mem0-shaped API over plain markdown + git, with a bi-temporal claim ledger, provenance typing, compliance-grade erasure, FastAPI REST layer, and hallucination-safety evals."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+keywords = ["memory", "llm", "chatbot", "ai", "rag", "vector-search", "git", "mem0"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "pyyaml>=6.0",
+    "python-frontmatter>=1.1.0",
+    "pydantic>=2.5",
+    "typer>=0.12.0",
+    "rich>=13.0.0",
+    "filelock>=3.12",
+    "python-dotenv>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/MonishKanungo/strata"
+Documentation = "https://github.com/MonishKanungo/strata#readme"
+Repository = "https://github.com/MonishKanungo/strata"
+"Bug Tracker" = "https://github.com/MonishKanungo/strata/issues"
+
+[project.optional-dependencies]
+llm = ["anthropic>=0.40.0", "openai>=1.0.0"]
+litellm = ["litellm>=1.40.0"]
+mcp = ["mcp>=1.0.0"]
+vector = ["sqlite-vec>=0.1.3", "model2vec>=0.3"]
+pii = ["presidio-analyzer>=2.2", "presidio-anonymizer>=2.2"]
+api = ["fastapi>=0.111.0", "uvicorn[standard]>=0.29.0"]
+crypto = ["cryptography>=42.0.0"]
+dev = ["pytest>=8.0.0"]
+all = [
+    "anthropic>=0.40.0",
+    "openai>=1.0.0",
+    "litellm>=1.40.0",
+    "mcp>=1.0.0",
+    "sqlite-vec>=0.1.3", "model2vec>=0.3",
+    "presidio-analyzer>=2.2", "presidio-anonymizer>=2.2",
+    "fastapi>=0.111.0", "uvicorn[standard]>=0.29.0",
+    "cryptography>=42.0.0",
+]
+
+[project.scripts]
+strata = "strata.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["strata*"]
+
+[tool.setuptools.package-data]
+strata = ["templates/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

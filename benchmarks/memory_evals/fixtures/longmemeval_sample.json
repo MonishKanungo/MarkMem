@@ -1,0 +1,54 @@
+[
+  {
+    "question_id": "fixture_q1",
+    "question_type": "single-session-user",
+    "question": "What instrument is the user learning to play?",
+    "answer": "cello",
+    "question_date": "2023/06/01 (Thu) 10:00",
+    "haystack_session_ids": ["S1"],
+    "haystack_dates": ["2023/05/20 (Sat) 09:00"],
+    "haystack_sessions": [
+      [
+        {"role": "user", "content": "I started learning the cello last month and my fingers ache."},
+        {"role": "assistant", "content": "That's normal at the beginning — short daily sessions help build calluses."}
+      ]
+    ],
+    "answer_session_ids": ["S1"]
+  },
+  {
+    "question_id": "fixture_q2",
+    "question_type": "knowledge-update",
+    "question": "Which city does the user live in now?",
+    "answer": "Porto",
+    "question_date": "2023/07/15 (Sat) 12:00",
+    "haystack_session_ids": ["S1", "S2"],
+    "haystack_dates": ["2023/05/01 (Mon) 18:00", "2023/07/01 (Sat) 11:00"],
+    "haystack_sessions": [
+      [
+        {"role": "user", "content": "I live in Lisbon and commute by tram."},
+        {"role": "assistant", "content": "The tram network there is lovely."}
+      ],
+      [
+        {"role": "user", "content": "Big news: I moved! I live in Porto now, right by the river."},
+        {"role": "assistant", "content": "Congratulations on the move to Porto!"}
+      ]
+    ],
+    "answer_session_ids": ["S2"]
+  },
+  {
+    "question_id": "fixture_q3_abs",
+    "question_type": "abstention",
+    "question": "What is the user's blood type?",
+    "answer": "The information is not available",
+    "question_date": "2023/07/20 (Thu) 09:00",
+    "haystack_session_ids": ["S1"],
+    "haystack_dates": ["2023/05/01 (Mon) 18:00"],
+    "haystack_sessions": [
+      [
+        {"role": "user", "content": "I live in Lisbon and commute by tram."},
+        {"role": "assistant", "content": "The tram network there is lovely."}
+      ]
+    ],
+    "answer_session_ids": []
+  }
+]

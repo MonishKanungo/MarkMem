@@ -1,0 +1,42 @@
+# Secrets
+.env
+.pypirc
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+*.whl
+*.tar.gz
+.pytest_cache/
+
+# Virtualenvs
+.venv/
+venv/
+
+# Generated memory repos — never commit a user's memory
+chat-memory/
+chat-memory-*/
+my-memory/
+strata-memory/
+test-memory/
+
+# Benchmark artefacts (regenerate with run_benchmarks.py)
+benchmarks/results/
+benchmarks/datasets/
+
+# Scratch / console captures
+result.txt
+_test_out.txt
+*.log
+
+# Tooling
+.streamlit/
+.claude/
+.vscode/
+.idea/
+
+# Internal docs (not published)
+docs/

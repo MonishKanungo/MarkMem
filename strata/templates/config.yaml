@@ -1,0 +1,24 @@
+# Strata config — runtime knobs. Schema/ontology lives in schema.md instead.
+# Env vars referenced at runtime (never stored): ANTHROPIC_API_KEY.
+# Any key here can be overridden with STRATA_<SECTION>_<KEY> env vars.
+
+llm:
+  provider: anthropic
+  compile_model: claude-haiku-4-5-20251001   # cheap, high-volume extraction/routing
+  judgment_model: claude-sonnet-5            # reserved for contradiction/lint judgment
+
+pipeline:
+  batch_size: 8          # raw entries compiled per worker cycle
+  interval_s: 2.0        # background worker poll interval (seconds)
+  review: auto           # auto | gated | off — memory-PR policy (see README)
+  min_confidence: 0.3    # ops below this go to the review queue in auto mode
+  consolidate_after: 5   # appended update-sections before a page is consolidated
+
+search:
+  token_budget: 2000     # max tokens of packed context per query
+  top_k: 5
+  provenance_weighting: true
+  rrf_k: 60
+
+pii:
+  policy: tag            # off | tag | mask | block
