@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "markmem"
-version = "0.4.0"
+version = "0.4.1"
 authors = [
   { name = "Monish Kanungo", email = "monishkanungo23@gmail.com" },
   { name = "Achintya Vaidyanathan", email = "achintya.vaidyanathank@gmail.com" }
 ]
-description = "Git-native memory layer for any chatbot: Mem0-shaped API over plain markdown + git, with a bi-temporal claim ledger, provenance typing, compliance-grade erasure, FastAPI REST layer, and hallucination-safety evals."
+description = "Git-native, Markdown-based memory layer for AI agents. Features bi-temporal fact ledgering, compliance-grade erasure, PII gating, hybrid search, and MCP integration."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
