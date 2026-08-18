@@ -14,7 +14,7 @@
 
 ## What is MarkMem?
 
-Chatbots forget. The usual fix—writing memories into a vector database—trades one problem for four: you can't inspect your own memory, you can't see what changed or why, facts overwrite each other silently, and proving user data erasure is nearly impossible.
+Chatbots forget. They cannot remember anything past the current session. The usual fix—writing memories into a vector database—trades one problem for four: you can't inspect your own memory, you can't see what changed or why, facts overwrite each other silently, and proving user data erasure is nearly impossible.
 
 **MarkMem** is different. Your chatbot's memory is a folder you can `cat`, `grep`, `git diff`, and delete. SQLite is a rebuildable cache on top; delete it and `markmem reindex` restores it from the markdown.
 
