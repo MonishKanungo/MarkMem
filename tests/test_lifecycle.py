@@ -1,8 +1,8 @@
-from strata.lifecycle import (consolidation_sweep, decay_sweep, lint_repo,
+from markmem.lifecycle import (consolidation_sweep, decay_sweep, lint_repo,
                               retention_sweep)
-from strata.lifecycle.consolidate import rewrite_body_from_ledger, update_section_count
-from strata.models import Claim, Page, Provenance
-from strata.util import utcnow_iso
+from markmem.lifecycle.consolidate import rewrite_body_from_ledger, update_section_count
+from markmem.models import Claim, Page, Provenance
+from markmem.util import utcnow_iso
 
 from conftest import add_and_flush
 
@@ -68,8 +68,8 @@ def test_consolidation_rewrites_from_ledger(mem):
 
 
 def test_consolidation_sweep_triggers_on_scar_tissue(mem):
-    from strata.models import PageOp
-    from strata.write.resolve import apply_op
+    from markmem.models import PageOp
+    from markmem.write.resolve import apply_op
     r = apply_op(mem.repo, mem.schema, PageOp(op="create", type="concept", title="Bloaty",
                                               summary="s", body="original"), "raw/a.md")
     for i in range(6):

@@ -4,7 +4,7 @@ optional Nemotron answerer.
 Two evaluation modes, honestly separated:
 
 - **retrieval-only** (default, fully offline): does the gold answer appear in
-  what Strata returns? Two levels — inside the token-budgeted packed context
+  what MarkMem returns? Two levels — inside the token-budgeted packed context
   (what an integrator would actually paste into a prompt), and inside the full
   text of the top-k retrieved pages (retrieval-stack recall).
 - **--with-llm**: Nemotron answers the question from the packed context; graded
@@ -22,7 +22,7 @@ import os
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from strata.util import est_tokens
+from markmem.util import est_tokens
 
 # ---------------- text metrics (SQuAD-style) ----------------
 
@@ -224,8 +224,8 @@ def fresh_memory(root, name: str, force_heuristic: bool = True):
     measure LLM-compiled memory instead).
 
     IMPORTANT: force_heuristic=True is ALWAYS respected — even when
-    STRATA_LLM_PROVIDER is set in the environment. The caller decides.
+    MARKMEM_LLM_PROVIDER is set in the environment. The caller decides.
     Use --llm-extract on the benchmark runner to opt in to LLM extraction."""
-    from strata import Memory
+    from markmem import Memory
     return Memory(repo_path=root / name, start_worker=False,
                   force_heuristic=force_heuristic)

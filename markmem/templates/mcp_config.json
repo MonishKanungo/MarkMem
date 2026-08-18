@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "markmem": {
+      "command": "python",
+      "args": ["-m", "markmem.mcp_server"],
+      "env": {
+        "MARKMEM_REPO": "./my-memory"
+      }
+    }
+  }
+}

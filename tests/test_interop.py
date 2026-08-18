@@ -1,7 +1,7 @@
 import json
 
-from strata import Memory
-from strata.interop import (export_jsonl, export_mem0, export_memory_md,
+from markmem import Memory
+from markmem.interop import (export_jsonl, export_mem0, export_memory_md,
                             import_jsonl, import_mem0)
 
 from conftest import add_and_flush

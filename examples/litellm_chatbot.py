@@ -1,29 +1,29 @@
 """Use ANY LLM for memory extraction, via LiteLLM.
 
-Strata's extraction step (raw conversation -> structured claims) can run on any
+MarkMem's extraction step (raw conversation -> structured claims) can run on any
 of LiteLLM's 100+ providers. Retrieval, the claim ledger, and storage are
 unchanged — only the compile step swaps out.
 
-    pip install "strata-memory[litellm]"
+    pip install "markmem[litellm]"
 
 Pick a provider by setting two env vars, then run this file:
 
     # OpenAI
     set OPENAI_API_KEY=sk-...
-    set STRATA_LLM_COMPILE_MODEL=gpt-4o-mini
+    set MARKMEM_LLM_COMPILE_MODEL=gpt-4o-mini
 
     # Groq — fastest, generous free tier
     set GROQ_API_KEY=gsk_...
-    set STRATA_LLM_COMPILE_MODEL=groq/llama-3.1-8b-instant
+    set MARKMEM_LLM_COMPILE_MODEL=groq/llama-3.1-8b-instant
 
     # Google Gemini
     set GEMINI_API_KEY=...
-    set STRATA_LLM_COMPILE_MODEL=gemini/gemini-1.5-flash
+    set MARKMEM_LLM_COMPILE_MODEL=gemini/gemini-1.5-flash
 
     # Ollama — fully local, no API key
     ollama pull llama3.1
-    set STRATA_LLM_COMPILE_MODEL=ollama/llama3.1
-    set STRATA_LLM_LITELLM_API_BASE=http://localhost:11434
+    set MARKMEM_LLM_COMPILE_MODEL=ollama/llama3.1
+    set MARKMEM_LLM_LITELLM_API_BASE=http://localhost:11434
 
     python examples/litellm_chatbot.py
 """
@@ -31,16 +31,16 @@ from __future__ import annotations
 
 import os
 
-from strata import Memory
-from strata.config import Config, LLMConfig
+from markmem import Memory
+from markmem.config import Config, LLMConfig
 
 
 def build_memory(repo: str = "./chat-memory-litellm") -> Memory:
     """A Memory whose extractor is LiteLLM, configured from the environment."""
     cfg = Config(llm=LLMConfig(
         provider="litellm",
-        compile_model=os.environ.get("STRATA_LLM_COMPILE_MODEL", "gpt-4o-mini"),
-        litellm_api_base=os.environ.get("STRATA_LLM_LITELLM_API_BASE"),
+        compile_model=os.environ.get("MARKMEM_LLM_COMPILE_MODEL", "gpt-4o-mini"),
+        litellm_api_base=os.environ.get("MARKMEM_LLM_LITELLM_API_BASE"),
     ))
     return Memory(repo_path=repo, config=cfg, start_worker=False)
 
@@ -48,11 +48,11 @@ def build_memory(repo: str = "./chat-memory-litellm") -> Memory:
 def main() -> None:
     memory = build_memory()
     print(f"extractor: {memory.pipeline.extractor.name}")
-    print(f"model    : {os.environ.get('STRATA_LLM_COMPILE_MODEL', 'gpt-4o-mini')}\n")
+    print(f"model    : {os.environ.get('MARKMEM_LLM_COMPILE_MODEL', 'gpt-4o-mini')}\n")
 
     if memory.pipeline.extractor.name != "litellm":
         print("LiteLLM extractor did not activate. Check:")
-        print('  pip install "strata-memory[litellm]"')
+        print('  pip install "markmem[litellm]"')
         print("  and that your provider API key is set.")
         memory.close()
         return

@@ -11,7 +11,7 @@ The dataset is NOT auto-downloaded (hosted via the project's release channels;
 for this harness; `_s`/`_m` also work but ingest much more). Get it from
 https://github.com/xiaowu0162/LongMemEval and pass --longmemeval <path>.
 
-Each instance becomes its own Strata user (sessions ingested, then the one
+Each instance becomes its own MarkMem user (sessions ingested, then the one
 question asked). Abstention instances (question_id ending in `_abs`, gold =
 unanswerable) are excluded from presence aggregates.
 """

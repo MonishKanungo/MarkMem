@@ -1,9 +1,9 @@
 import sqlite3
 import time
 
-from strata import Memory
-from strata.models import PageOp, RawEntry
-from strata.write.extractors.base import ExtractionError
+from markmem import Memory
+from markmem.models import PageOp, RawEntry
+from markmem.write.extractors.base import ExtractionError
 
 
 class FailingExtractor:

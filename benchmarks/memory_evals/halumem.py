@@ -248,7 +248,7 @@ def run_halumem(path: Optional[Path], work_dir: Path, k: int = 5,
             t0 = time.perf_counter()
             hits = memory.searcher.search(question, user_id=user_id, top_k=k)
             latency_ms = (time.perf_counter() - t0) * 1000
-            from strata.util import est_tokens
+            from markmem.util import est_tokens
             bench_result.cases.append(CaseResult(
                 qid=case["id"],
                 category=halu_type,
@@ -267,7 +267,7 @@ def run_halumem(path: Optional[Path], work_dir: Path, k: int = 5,
 
 def _non_episodic_blocks(packed: str) -> str:
     """Keep only semantic blocks (not session/raw) for stale-leak checking.
-    Mirrors the logic in strata/evals/harness.py."""
+    Mirrors the logic in markmem/evals/harness.py."""
     keep = []
     for block in packed.split("\n\n"):
         header = block.splitlines()[0] if block else ""

@@ -1,14 +1,14 @@
-"""Strata + OpenAI — drop-in memory for any OpenAI-compatible chatbot.
+"""MarkMem + OpenAI — drop-in memory for any OpenAI-compatible chatbot.
 
 Install:
-    pip install strata-memory openai
+    pip install markmem openai
 
 Run:
     OPENAI_API_KEY=sk-... python examples/openai_chatbot.py
 """
 import os
 from openai import OpenAI
-from strata import Memory
+from markmem import Memory
 
 client = OpenAI()
 memory = Memory(repo_path="./chat-memory")

@@ -1,5 +1,5 @@
 """Tests for the add-on modules (benchmarks/memory_evals + chatbot) — nothing
-here touches or depends on internals beyond strata's public surface."""
+here touches or depends on internals beyond markmem's public surface."""
 from pathlib import Path
 
 import pytest
@@ -62,7 +62,7 @@ def test_locomo_fixture_end_to_end(tmp_path):
 
 def test_evidence_group_semantics(tmp_path):
     """any/all evidence semantics incl. LLM-routing groups and dropped evidence."""
-    from strata import Memory
+    from markmem import Memory
     from benchmarks.memory_evals.common import evaluate_question
     m = Memory(repo_path=tmp_path / "ev", start_worker=False)
     try:
@@ -127,7 +127,7 @@ def test_inhouse_scenario_deterministic(tmp_path):
 
 
 def test_inhouse_against_existing_repo(tmp_path):
-    from strata import Memory
+    from markmem import Memory
     m = Memory(repo_path=tmp_path / "user-repo", start_worker=False)
     m.add("I prefer window seats", user_id="u")
     m.add("I prefer aisle seats now.", user_id="u")

@@ -1,4 +1,4 @@
-"""Benchmark runner — LoCoMo + LongMemEval + Strata's in-house evaluator,
+"""Benchmark runner — LoCoMo + LongMemEval + MarkMem's in-house evaluator,
 results in labelled tables + a combined summary, saved as JSON.
 
     python -m benchmarks.memory_evals.run --self-test          # offline, fixtures
@@ -9,7 +9,7 @@ results in labelled tables + a combined summary, saved as JSON.
     python -m benchmarks.memory_evals.run --inhouse-repo ./chat-memory
 
 Honesty note (printed with results): retrieval-only numbers are answer-presence
-recall proxies computed with Strata's default offline stack — they are NOT
+recall proxies computed with MarkMem's default offline stack — they are NOT
 comparable to published LoCoMo/LongMemEval leaderboard scores, which use full
 LLM QA pipelines. Use --with-llm for graded QA (still your stack, your numbers).
 """
@@ -115,7 +115,7 @@ def print_combined(results: list[BenchmarkResult]) -> None:
         table.add_row(r.name, r.mode, str(s["cases"]), primary, secondary, tokens, latency)
     console.print(table)
     console.print(
-        "[dim]Retrieval-only numbers are answer-presence recall proxies on Strata's "
+        "[dim]Retrieval-only numbers are answer-presence recall proxies on MarkMem's "
         "offline stack — not comparable to published leaderboard scores (§14 of the "
         "spec: never quote incumbents' numbers without reproduction).[/dim]"
     )
@@ -132,7 +132,7 @@ def save_results(results: list[BenchmarkResult], out: Path | None) -> Path:
 
 def main(argv: list[str] | None = None) -> list[BenchmarkResult]:
     ap = argparse.ArgumentParser(
-        description="Run Strata against LoCoMo, LongMemEval and the in-house evaluator.")
+        description="Run MarkMem against LoCoMo, LongMemEval and the in-house evaluator.")
     ap.add_argument("--locomo", type=Path, help="path to locomo10.json")
     ap.add_argument("--download-locomo", action="store_true",
                     help=f"download LoCoMo to benchmarks/datasets/ from {LOCOMO_URL}")
@@ -144,7 +144,7 @@ def main(argv: list[str] | None = None) -> list[BenchmarkResult]:
     ap.add_argument("--skip-beam", action="store_true", help="skip BEAM evaluation")
     ap.add_argument("--skip-halumem", action="store_true", help="skip HaluMem evaluation")
     ap.add_argument("--inhouse-repo", type=Path,
-                    help="evaluate an existing Strata repo instead of the built-in scenario")
+                    help="evaluate an existing MarkMem repo instead of the built-in scenario")
     ap.add_argument("--limit", type=int, default=None,
                     help="max conversations (LoCoMo) / instances (LongMemEval)")
     ap.add_argument("--limit-qa", type=int, default=None, help="max questions per LoCoMo conversation")
@@ -178,7 +178,7 @@ def main(argv: list[str] | None = None) -> list[BenchmarkResult]:
     if args.download_locomo and locomo_path is None:
         locomo_path = download_locomo(ROOT / "benchmarks" / "datasets" / "locomo10.json")
 
-    work_dir = Path(tempfile.mkdtemp(prefix="strata-membench-"))
+    work_dir = Path(tempfile.mkdtemp(prefix="markmem-membench-"))
     force_heuristic = not args.llm_extract
     results: list[BenchmarkResult] = []
 

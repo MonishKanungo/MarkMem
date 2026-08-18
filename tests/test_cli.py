@@ -2,7 +2,7 @@ import json
 
 from typer.testing import CliRunner
 
-from strata.cli import app
+from markmem.cli import app
 
 runner = CliRunner()
 
@@ -106,11 +106,10 @@ def test_review_cli(tmp_path):
                         "--repo", repo, "--user", "alice"])
     result = runner.invoke(app, ["review", "--repo", repo])
     assert result.exit_code == 0 and "injection" in result.output
-    # Extract item id — filter ANSI codes and progress bar lines
     import re
     clean = re.sub(r"\x1b\[[0-9;]*m", "", result.output)
-    item_id = next((line.strip().split()[0] for line in clean.splitlines()
-                    if line.strip().startswith("r-")), None)
+    match = re.search(r"r-[0-9a-f]{8,16}", clean)
+    item_id = match.group(0) if match else None
     assert item_id, f"no r- item id in output:\n{clean}"
     result = runner.invoke(app, ["review", "--repo", repo, "--reject", item_id])
     assert result.exit_code == 0 and "rejected" in result.output

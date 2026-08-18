@@ -96,11 +96,11 @@ def run_beam(path: Optional[Path], work_dir: Path, k: int = 5,
              limit: Optional[int] = None, llm=None,
              force_heuristic: bool = True,
              progress: Callable[[str], None] = print) -> BenchmarkResult:
-    """Run BEAM evaluation against Strata.
+    """Run BEAM evaluation against MarkMem.
 
     Args:
         path: Path to BEAM JSON file. If None, uses the built-in fixture.
-        work_dir: Temporary directory for Strata repos.
+        work_dir: Temporary directory for MarkMem repos.
         k: Search top-k.
         limit: Max conversations to evaluate.
         llm: Optional NemotronClient for graded QA.

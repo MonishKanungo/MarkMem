@@ -1,6 +1,6 @@
-"""In-house evaluator — Strata's own supersession-based domain eval (§4.4).
+"""In-house evaluator — MarkMem's own supersession-based domain eval (§4.4).
 
-Runs `strata.evals.run_domain_eval` either against a repo you point it at
+Runs `markmem.evals.run_domain_eval` either against a repo you point it at
 (--inhouse-repo, evaluating YOUR memory) or against a deterministic built-in
 scenario: 3 users × several contradiction chains, ingested fresh, so the run
 is reproducible offline and exercises the exact temporal-correctness failure
@@ -16,7 +16,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Callable, Optional
 
-from strata.evals import run_domain_eval
+from markmem.evals import run_domain_eval
 
 from .common import BenchmarkResult, CaseResult, fresh_memory
 
@@ -52,7 +52,7 @@ def build_scenario(work_dir: Path):
 def run_inhouse(work_dir: Path, k: int = 5, repo: Optional[Path] = None,
                 progress: Callable[[str], None] = print) -> BenchmarkResult:
     if repo is not None:
-        from strata import Memory
+        from markmem import Memory
         memory = Memory(repo_path=repo, start_worker=False)
         source = f"your repo: {repo}"
     else:
@@ -71,7 +71,7 @@ def run_inhouse(work_dir: Path, k: int = 5, repo: Optional[Path] = None,
         # in_context <- current fact present · in_pages <- page hit
         failures = {f["question"]: f for f in eval_result.failures}
         # run_domain_eval aggregates; reconstruct per-case booleans from failures
-        from strata.evals import generate_domain_eval
+        from markmem.evals import generate_domain_eval
         for case in generate_domain_eval(memory):
             f = failures.get(case.question)
             result.cases.append(CaseResult(

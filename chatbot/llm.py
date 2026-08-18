@@ -47,8 +47,14 @@ class NemotronClient:
         if not self.api_key and os.environ.get("AZURE_OPENAI_API_KEY"):
             self.api_key = os.environ.get("AZURE_OPENAI_API_KEY", "").strip()
             self.base_url = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
-            self.model = model or os.environ.get("STRATA_LLM_COMPILE_MODEL", "gpt-4o-mini")
-            
+            self.model = model or os.environ.get("MARKMEM_LLM_COMPILE_MODEL", "gpt-4o-mini")
+        
+        # Fall back to standard OpenAI
+        if not self.api_key and os.environ.get("OPENAI_API_KEY"):
+            self.api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+            self.base_url = None # Default OpenAI base URL
+            self.model = model or os.environ.get("MARKMEM_LLM_COMPILE_MODEL", "gpt-5.4-mini")
+
         self._client = None
 
     @property

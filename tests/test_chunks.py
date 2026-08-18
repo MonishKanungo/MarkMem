@@ -2,11 +2,11 @@
 packing, and the index schema migration — the R@5 fix set."""
 import sqlite3
 
-from strata import Memory
-from strata.models import Page
-from strata.read.fts import (INDEX_SCHEMA_VERSION, chunk_body, fts_query,
+from markmem import Memory
+from markmem.models import Page
+from markmem.read.fts import (INDEX_SCHEMA_VERSION, chunk_body, fts_query,
                              _CHUNK_TARGET_CHARS)
-from strata.util import utcnow_iso
+from markmem.util import utcnow_iso
 
 from conftest import add_and_flush
 
@@ -129,7 +129,7 @@ def test_page_update_replaces_chunks(mem):
 
 
 def test_reindex_rebuilds_chunks_invariant(tmp_path):
-    """Delete .strata entirely -> chunks come back from markdown (the invariant)."""
+    """Delete .markmem entirely -> chunks come back from markdown (the invariant)."""
     import gc
     import shutil
     m = Memory(repo_path=tmp_path / "m", start_worker=False)
@@ -139,11 +139,11 @@ def test_reindex_rebuilds_chunks_invariant(tmp_path):
     gc.collect()                      # release lingering sqlite handles on Windows
     import time; time.sleep(0.1)      # give Windows a moment to release file locks
     try:
-        shutil.rmtree(tmp_path / "m" / ".strata")
+        shutil.rmtree(tmp_path / "m" / ".markmem")
     except PermissionError:
         # Windows WAL lock race — retry once after a brief wait
         time.sleep(0.5)
-        shutil.rmtree(tmp_path / "m" / ".strata")
+        shutil.rmtree(tmp_path / "m" / ".markmem")
     m2 = Memory(repo_path=tmp_path / "m", start_worker=False)
     m2.reindex()
     hits = m2.searcher.search("quokka sanctuary", user_id="q", top_k=5)
@@ -157,7 +157,7 @@ def test_schema_migration_auto_reindexes(tmp_path):
     add_and_flush(m, "user: the capybara cafe opened downtown", user_id="mig")
     m.close()
     # simulate an old index: wipe chunks and stamp an older schema version
-    db = tmp_path / "m" / ".strata" / "index.db"
+    db = tmp_path / "m" / ".markmem" / "index.db"
     with sqlite3.connect(db) as conn:
         conn.execute("DELETE FROM chunks_fts")
         conn.execute("INSERT OR REPLACE INTO meta VALUES ('index_schema', '1')")

@@ -1,15 +1,15 @@
-"""Strata + Anthropic Claude — memory-augmented Claude chatbot.
+"""MarkMem + Anthropic Claude — memory-augmented Claude chatbot.
 
 Install:
-    pip install strata-memory anthropic
-    pip install strata-memory[llm]   # also activates LLM extraction
+    pip install markmem anthropic
+    pip install markmem[llm]   # also activates LLM extraction
 
 Run:
     ANTHROPIC_API_KEY=sk-ant-... python examples/anthropic_chatbot.py
 """
 import os
 import anthropic
-from strata import Memory
+from markmem import Memory
 
 client = anthropic.Anthropic()
 memory = Memory(repo_path="./chat-memory")  # LLM extractor auto-activates with API key

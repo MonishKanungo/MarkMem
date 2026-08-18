@@ -1,4 +1,4 @@
-from strata.evals import generate_domain_eval, run_domain_eval
+from markmem.evals import generate_domain_eval, run_domain_eval
 
 from conftest import add_and_flush
 

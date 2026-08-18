@@ -2,8 +2,8 @@ import threading
 
 import pytest
 
-from strata.storage.git_backend import SubprocessGit, writer_lock
-from strata.storage.repo import Repo
+from markmem.storage.git_backend import SubprocessGit, writer_lock
+from markmem.storage.repo import Repo
 
 
 @pytest.fixture()

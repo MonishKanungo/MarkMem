@@ -9,7 +9,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from strata import Memory
+from markmem import Memory
 
 TOPICS = ["terraform", "kubernetes", "postgres", "lambda", "budget", "onboarding",
           "migration", "audit", "billing", "search"]

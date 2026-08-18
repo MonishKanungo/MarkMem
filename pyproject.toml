@@ -3,10 +3,11 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "strata-memory"
+name = "markmem"
 version = "0.4.0"
 authors = [
-  { name = "Monish Kanungo", email = "monishkanungo@gmail.com" }
+  { name = "Monish Kanungo", email = "monishkanungo23@gmail.com" },
+  { name = "Achintya Vaidyanathan", email = "achintya.vaidyanathank@gmail.com" }
 ]
 description = "Git-native memory layer for any chatbot: Mem0-shaped API over plain markdown + git, with a bi-temporal claim ledger, provenance typing, compliance-grade erasure, FastAPI REST layer, and hallucination-safety evals."
 readme = "README.md"
@@ -37,10 +38,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/MonishKanungo/strata"
-Documentation = "https://github.com/MonishKanungo/strata#readme"
-Repository = "https://github.com/MonishKanungo/strata"
-"Bug Tracker" = "https://github.com/MonishKanungo/strata/issues"
+Homepage = "https://github.com/MonishKanungo/markmem"
+Documentation = "https://github.com/MonishKanungo/markmem#readme"
+Repository = "https://github.com/MonishKanungo/markmem"
+"Bug Tracker" = "https://github.com/MonishKanungo/markmem/issues"
 
 [project.optional-dependencies]
 llm = ["anthropic>=0.40.0", "openai>=1.0.0"]
@@ -63,13 +64,13 @@ all = [
 ]
 
 [project.scripts]
-strata = "strata.cli:app"
+markmem = "markmem.cli:app"
 
 [tool.setuptools.packages.find]
-include = ["strata*"]
+include = ["markmem*"]
 
 [tool.setuptools.package-data]
-strata = ["templates/*"]
+markmem = ["templates/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

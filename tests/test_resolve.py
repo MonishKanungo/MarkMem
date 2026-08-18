@@ -1,7 +1,7 @@
-from strata.models import ClaimDraft, PageOp, Provenance
-from strata.schema import Schema
-from strata.storage.repo import Repo
-from strata.write.resolve import apply_op, canonical_page_id
+from markmem.models import ClaimDraft, PageOp, Provenance
+from markmem.schema import Schema
+from markmem.storage.repo import Repo
+from markmem.write.resolve import apply_op, canonical_page_id
 
 
 def _schema():

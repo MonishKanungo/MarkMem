@@ -6,7 +6,7 @@ Dataset shape (defensively parsed):
        "session_1_date_time": "...", ...},
       "qa": [{"question", "answer" | "adversarial_answer", "category", ...}]}]
 
-Each conversation becomes one Strata user; each session one raw add() with its
+Each conversation becomes one MarkMem user; each session one raw add() with its
 date stamped into the text. Category 5 (adversarial / unanswerable) is excluded
 from presence aggregates — its gold is "not answerable", which a substring
 check can't score.

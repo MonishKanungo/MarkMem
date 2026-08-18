@@ -1,4 +1,4 @@
-"""Strata demo chatbot — Streamlit UI over the Memory layer + Nemotron.
+"""MarkMem demo chatbot — Streamlit UI over the Memory layer + Nemotron.
 
 Run from the project root:
 
@@ -22,7 +22,7 @@ try:                                    # `streamlit run chatbot/app.py` (script
 except ImportError:                     # `python -m streamlit run ...` from elsewhere
     from chatbot.llm import NemotronClient
 
-from strata import Memory
+from markmem import Memory
 
 PERSONA = (
     "You are a helpful personal assistant with long-term memory. "
@@ -56,7 +56,7 @@ def demo_reply(context: str) -> str:
 
 
 def render_sidebar(memory: Memory, user_id: str) -> dict:
-    st.sidebar.title("🧠 Strata")
+    st.sidebar.title("🧠 MarkMem")
     st.sidebar.caption(f"repo: `{memory.repo.root}`")
 
     settings = {
@@ -108,7 +108,7 @@ def render_sidebar(memory: Memory, user_id: str) -> dict:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Strata Chat", page_icon="🧠", layout="wide")
+    st.set_page_config(page_title="MarkMem Chat", page_icon="🧠", layout="wide")
 
     with st.sidebar:
         repo_path = st.text_input("Memory repo path", value="./chat-memory")
@@ -118,7 +118,7 @@ def main() -> None:
     llm = get_llm()
     settings = render_sidebar(memory, user_id)
 
-    st.title("Strata memory chatbot")
+    st.title("MarkMem memory chatbot")
     if llm.available:
         st.caption(f"model: `{llm.model}` · memory: git-native markdown at `{repo_path}`")
     else:

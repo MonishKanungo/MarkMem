@@ -4,7 +4,7 @@ Run:  python examples/simple_chatbot.py
 Works fully offline (heuristic extractor). Point `call_llm` at a real model
 and set ANTHROPIC_API_KEY for LLM-compiled memory.
 """
-from strata import Memory
+from markmem import Memory
 
 memory = Memory(repo_path="./chat-memory")
 

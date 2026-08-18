@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from strata import Memory
+from markmem import Memory
 
 
 @pytest.fixture(autouse=True)
@@ -10,12 +10,12 @@ def _no_llm(monkeypatch):
     """Tests always run offline against the heuristic extractor with default
     config. This must clear every provider/override variable: chatbot.llm's
     load_env() pulls the project .env (which may hold real Azure/NVIDIA keys
-    and STRATA_* overrides) into os.environ mid-session, and without this
+    and MARKMEM_* overrides) into os.environ mid-session, and without this
     guard later tests silently flip to live LLM extraction."""
     for var in ("ANTHROPIC_API_KEY", "AZURE_OPENAI_API_KEY", "AZURE_OPENAI_ENDPOINT",
                 "AZURE_OPENAI_API_VERSION", "NVIDIA_API_KEY"):
         monkeypatch.delenv(var, raising=False)
-    for var in [v for v in os.environ if v.startswith("STRATA_")]:
+    for var in [v for v in os.environ if v.startswith("MARKMEM_")]:
         monkeypatch.delenv(var, raising=False)
 
 

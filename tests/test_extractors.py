@@ -2,12 +2,12 @@ from types import SimpleNamespace
 
 import pytest
 
-from strata.config import Config
-from strata.models import RawEntry
-from strata.schema import Schema
-from strata.write.extractors.anthropic_llm import TOOL_NAME, AnthropicExtractor
-from strata.write.extractors.base import ExtractionError, get_extractor
-from strata.write.extractors.heuristic import HeuristicExtractor, extract_fact_claims
+from markmem.config import Config
+from markmem.models import RawEntry
+from markmem.schema import Schema
+from markmem.write.extractors.anthropic_llm import TOOL_NAME, AnthropicExtractor
+from markmem.write.extractors.base import ExtractionError, get_extractor
+from markmem.write.extractors.heuristic import HeuristicExtractor, extract_fact_claims
 
 
 def _raw(text, user_id="alice"):
@@ -89,7 +89,7 @@ class FakeClient:
 
 
 def test_llm_extractor_valid_output(tmp_path):
-    from strata.obs import Ledgers
+    from markmem.obs import Ledgers
     ledgers = Ledgers(tmp_path)
     good = {"ops": [{"op": "update", "type": "user", "user_id": "alice", "title": "alice",
                      "summary": "Profile of alice",

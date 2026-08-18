@@ -1,8 +1,8 @@
 import pytest
 
-from strata.models import Claim, Page, Provenance
-from strata.storage.repo import Repo, RepoError
-from strata.util import slugify, utcnow_iso
+from markmem.models import Claim, Page, Provenance
+from markmem.storage.repo import Repo, RepoError
+from markmem.util import slugify, utcnow_iso
 
 
 @pytest.fixture()
@@ -22,7 +22,7 @@ def test_scaffold_layout(repo):
     assert repo.schema_path.exists()
     assert repo.config_path.exists()
     assert repo.index_path.exists()
-    assert (repo.root / ".gitignore").read_text().strip() == ".strata/"
+    assert (repo.root / ".gitignore").read_text().strip() == ".markmem/"
     assert (repo.raw_dir / "failed").is_dir()
 
 

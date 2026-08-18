@@ -1,13 +1,13 @@
-"""Strata AsyncMemory — for async frameworks (FastAPI, aiohttp, etc.)
+"""MarkMem AsyncMemory — for async frameworks (FastAPI, aiohttp, etc.)
 
 Install:
-    pip install strata-memory
+    pip install markmem
 
 Run:
     python examples/async_chatbot.py
 """
 import asyncio
-from strata import AsyncMemory
+from markmem import AsyncMemory
 
 
 async def main():

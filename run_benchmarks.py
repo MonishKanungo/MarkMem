@@ -1,7 +1,7 @@
 """
-Strata — Competitive Benchmark Suite
+MarkMem — Competitive Benchmark Suite
 =====================================
-Tests Strata across every axis from the competitive comparison table:
+Tests MarkMem across every axis from the competitive comparison table:
   Mem0, Letta/MemGPT, Khoj, supermemory, MemPalace, Hippo, Built-in (CLAUDE.md)
 
 Axes tested:
@@ -52,8 +52,8 @@ RESULTS_DIR = ROOT / "benchmarks" / "results"
 
 def bench_latency(n: int = 500) -> dict:
     """add() enqueue and search() latency at N pages — vector disabled via config."""
-    from strata import Memory
-    from strata.config import Config
+    from markmem import Memory
+    from markmem.config import Config
 
     console.print(f"  [cyan]latency:[/cyan] ingesting {n} pages (L1 only — no vector download)...")
     root = Path(tempfile.mkdtemp()) / "bench-lat"
@@ -217,9 +217,9 @@ def bench_beam(work_dir: Path, k: int = 5) -> dict:
 def bench_auto_capture() -> dict:
     """PII detection rate, injection quarantine rate, review queue accuracy."""
     import tempfile
-    from strata import Memory
-    from strata.write.pii import get_scanner
-    from strata.config import Config, PipelineConfig, PIIConfig
+    from markmem import Memory
+    from markmem.write.pii import get_scanner
+    from markmem.config import Config, PipelineConfig, PIIConfig
 
     console.print("  [cyan]auto-capture:[/cyan] PII + injection detection...")
 
@@ -280,8 +280,8 @@ def bench_auto_capture() -> dict:
 
 def bench_token_efficiency(work_dir: Path) -> dict:
     """Token budget usage vs raw page size."""
-    from strata import Memory
-    from strata.util import est_tokens
+    from markmem import Memory
+    from markmem.util import est_tokens
 
     console.print("  [cyan]token-efficiency:[/cyan] context packing...")
     tmp = work_dir / "tokeff"
@@ -314,9 +314,9 @@ def bench_token_efficiency(work_dir: Path) -> dict:
         m.add(f, user_id="alice")
     m.flush()
 
-    # Measure: raw input tokens (what you'd paste without Strata) vs packed output
+    # Measure: raw input tokens (what you'd paste without MarkMem) vs packed output
     all_pages = m.get_all(user_id="alice")
-    # The honest denominator: total tokens of the RAW input facts (what you told Strata)
+    # The honest denominator: total tokens of the RAW input facts (what you told MarkMem)
     raw_tokens = sum(est_tokens(f) for f in facts)
     packed = m.search("alice preferences work", user_id="alice", format="context") or ""
     packed_tokens = est_tokens(packed)
@@ -341,7 +341,7 @@ def bench_token_efficiency(work_dir: Path) -> dict:
 def bench_multi_user() -> dict:
     """Cross-user isolation: user A's data must not appear in user B's results."""
     import tempfile
-    from strata import Memory
+    from markmem import Memory
 
     console.print("  [cyan]multi-user:[/cyan] isolation test...")
     tmp = Path(tempfile.mkdtemp()) / "multiuser"
@@ -393,8 +393,8 @@ def bench_multi_user() -> dict:
 def bench_erasure() -> dict:
     """GDPR forget + crypto-shred correctness."""
     import tempfile
-    from strata import Memory
-    from strata.storage.crypto_erasure import CryptoErasureManager, generate_dek, encrypt, decrypt
+    from markmem import Memory
+    from markmem.storage.crypto_erasure import CryptoErasureManager, generate_dek, encrypt, decrypt
 
     console.print("  [cyan]erasure:[/cyan] GDPR forget + crypto-shred...")
     tmp = Path(tempfile.mkdtemp()) / "erasure"
@@ -434,16 +434,16 @@ def bench_erasure() -> dict:
     return result
 
 
-# ── Benchmark 11: StrataBench (own ground-truth suite, true R@k) ─────────────
+# ── Benchmark 11: MarkMemBench (own ground-truth suite, true R@k) ─────────────
 
-def bench_stratabench(work_dir: Path, k: int = 5, llm=None,
+def bench_markmembench(work_dir: Path, k: int = 5, llm=None,
                       llm_extract: bool = False) -> dict:
-    """Strata's own hand-authored benchmark — the only one here with labelled
+    """MarkMem's own hand-authored benchmark — the only one here with labelled
     gold evidence pages, so R@1/R@5/MRR/P@5 are true retrieval metrics."""
-    from benchmarks.memory_evals.stratabench import run_stratabench
-    console.print("  [cyan]stratabench:[/cyan] 18 hand-authored questions, "
+    from benchmarks.memory_evals.markmembench import run_markmembench
+    console.print("  [cyan]markmembench:[/cyan] 18 hand-authored questions, "
                   "10 capabilities, labelled evidence...")
-    r = run_stratabench(work_dir, k=k, llm=llm,
+    r = run_markmembench(work_dir, k=k, llm=llm,
                         force_heuristic=not llm_extract,
                         progress=lambda m: console.print(m))
     console.print(f"  R@1={r['r_at_1']:.3f}  R@5={r['r_at_5']:.3f}  "
@@ -466,7 +466,7 @@ def bench_feature_matrix() -> dict:
     try:
         import sqlite_vec
         import model2vec
-        from strata.read.vectors import get_vector_index
+        from markmem.read.vectors import get_vector_index
         import tempfile as _tmpmod
         _vdb = Path(_tmpmod.mkdtemp()) / "vec_check.db"
         _vidx = get_vector_index(_vdb)
@@ -475,9 +475,9 @@ def bench_feature_matrix() -> dict:
     except Exception as _e:
         console.print(f"  [yellow]  vector check error: {_e}[/yellow]")
 
-    from strata import Memory
-    from strata.write.pii import get_scanner
-    from strata.config import PipelineConfig
+    from markmem import Memory
+    from markmem.write.pii import get_scanner
+    from markmem.config import PipelineConfig
 
     tmp = Path(tempfile.mkdtemp()) / "features"
     m = Memory(repo_path=tmp, start_worker=False)
@@ -541,13 +541,13 @@ COMPETITORS = {
 
 def print_report(results: dict) -> None:
     console.print()
-    console.rule("[bold green]STRATA BENCHMARK RESULTS[/bold green]")
+    console.rule("[bold green]MARKMEM BENCHMARK RESULTS[/bold green]")
 
     # --- Latency ---
     lat = results.get("latency", {})
     if lat:
         t = Table(title="1. Latency (at 500 pages)", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_column("Mem0 (reference)", justify="right")
         t.add_row("add() p50",    f"{lat['add_p50_ms']} ms",    "~6 ms")
         t.add_row("add() p95",    f"{lat['add_p95_ms']} ms",    "~10 ms")
@@ -561,7 +561,7 @@ def print_report(results: dict) -> None:
     tmp = results.get("temporal", {})
     if tmp:
         t = Table(title="2. Temporal Correctness (supersession chains)", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_column("Hippo (reference)", justify="right")
         t.add_row("hit@5",         f"{tmp['hit_at_k']:.3f}",          "0.944")
         t.add_row("current-fact",  f"{tmp['current_fact_rate']:.3f}",  "N/A")
@@ -573,7 +573,7 @@ def print_report(results: dict) -> None:
     loc = results.get("locomo", {})
     if loc:
         t = Table(title="3. LoCoMo Retrieval R@5", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_column("Letta/MemGPT (reference)", justify="right")
         t.add_column("Khoj (reference)", justify="right")
         if "r_at_5" in loc:
@@ -595,7 +595,7 @@ def print_report(results: dict) -> None:
     hal = results.get("halumem", {})
     if hal:
         t = Table(title="4. Hallucination Safety (HaluMem)", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right"); t.add_column("ideal", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right"); t.add_column("ideal", justify="right")
         t.add_row("stale-leak rate",      f"{hal['stale_leak_rate']:.3f}",      "0.000")
         t.add_row("contamination rate",   f"{hal['contamination_rate']:.3f}",   "0.000")
         t.add_row("overall safety rate",  f"{hal['overall_safety_rate']:.3f}",  "1.000")
@@ -605,7 +605,7 @@ def print_report(results: dict) -> None:
     bm = results.get("beam", {})
     if bm:
         t = Table(title="5. BEAM (Episodic/Temporal/Multi-hop)", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_row("answer-in-context", f"{bm['answer_in_context']:.3f}")
         for k, v in bm.items():
             if k.startswith("in_context_"):
@@ -616,7 +616,7 @@ def print_report(results: dict) -> None:
     ac = results.get("auto_capture", {})
     if ac:
         t = Table(title="6. Auto-capture & Safety", show_header=True, header_style="bold cyan")
-        t.add_column("check"); t.add_column("Strata", justify="right"); t.add_column("Mem0", justify="right")
+        t.add_column("check"); t.add_column("MarkMem", justify="right"); t.add_column("Mem0", justify="right")
         t.add_row("PII detection rate",       f"{ac['pii_detection_rate']:.0%}", "requires setup")
         t.add_row("PII scanner",              ac["pii_scanner"],                "regex / Presidio")
         t.add_row("injection quarantine",     str(ac["injection_quarantine_count"]), "none")
@@ -627,7 +627,7 @@ def print_report(results: dict) -> None:
     tok = results.get("token_efficiency", {})
     if tok:
         t = Table(title="7. Context Token Efficiency", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right"); t.add_column("Built-in CLAUDE.md", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right"); t.add_column("Built-in CLAUDE.md", justify="right")
         t.add_row("facts ingested",    str(tok["facts_ingested"]),          str(tok["facts_ingested"]))
         t.add_row("packed tokens",     str(tok["packed_tokens"]),           "22K+ (loads all)")
         t.add_row("token budget",      str(tok["token_budget"]),            "unlimited")
@@ -638,7 +638,7 @@ def print_report(results: dict) -> None:
     mu = results.get("multi_user", {})
     if mu:
         t = Table(title="8. Multi-user Isolation", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_row("users tested",        str(mu["users_tested"]))
         t.add_row("isolation rate",      f"{mu['isolation_rate']:.0%}")
         t.add_row("contamination count", str(mu["contamination_count"]))
@@ -648,7 +648,7 @@ def print_report(results: dict) -> None:
     er = results.get("erasure", {})
     if er:
         t = Table(title="9. GDPR Erasure", show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_row("pages erased",       str(er["pages_before_forget"]))
         t.add_row("erasure complete",   "yes" if er["forget_erasure_complete"] else "no")
         t.add_row("forget latency",     f"{er['forget_latency_ms']}ms")
@@ -656,12 +656,12 @@ def print_report(results: dict) -> None:
         t.add_row("crypto-shred (AES-256-GCM)", "yes" if er["crypto_shred_works"] else "no")
         console.print(t)
 
-    # --- StrataBench (true R@k, own ground truth) ---
-    sb = results.get("stratabench", {})
+    # --- MarkMemBench (true R@k, own ground truth) ---
+    sb = results.get("markmembench", {})
     if sb:
-        t = Table(title="11. StrataBench — TRUE R@k (labelled gold evidence)",
+        t = Table(title="11. MarkMemBench — TRUE R@k (labelled gold evidence)",
                   show_header=True, header_style="bold cyan")
-        t.add_column("metric"); t.add_column("Strata", justify="right")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
         t.add_column("reference", justify="right")
         def _f(v):
             return "—" if v is None else f"{v:.3f}"
@@ -683,7 +683,7 @@ def print_report(results: dict) -> None:
         t.add_row("questions",          str(sb["questions"]), "—")
         console.print(t)
 
-        ct = Table(title="11b. StrataBench per-capability", header_style="bold cyan")
+        ct = Table(title="11b. MarkMemBench per-capability", header_style="bold cyan")
         for col in ("capability", "n", "R@5", "MRR", "answer-in-ctx", "F1"):
             ct.add_column(col, justify="right" if col != "capability" else "left")
         for cat, b in sorted(sb["by_category"].items()):
@@ -700,7 +700,7 @@ def print_report(results: dict) -> None:
     if fm:
         t = Table(title="10. Feature Matrix vs Competitors", show_header=True, header_style="bold cyan")
         t.add_column("feature")
-        t.add_column("Strata", justify="center")
+        t.add_column("MarkMem", justify="center")
         t.add_column("Mem0",   justify="center")
         t.add_column("Letta",  justify="center")
         t.add_column("Khoj",   justify="center")
@@ -730,14 +730,14 @@ def print_report(results: dict) -> None:
             ("Portable format",       fm["portable_format"],  True,  False, False, False),
             ("Domain eval harness",   fm["domain_eval_harness"], False, False, False, False),
         ]
-        for feature, strata, mem0, letta, khoj, builtin in rows:
-            t.add_row(feature, Y if strata else N, Y if mem0 else N,
+        for feature, markmem, mem0, letta, khoj, builtin in rows:
+            t.add_row(feature, Y if markmem else N, Y if mem0 else N,
                       Y if letta else N, Y if khoj else N, Y if builtin else N)
         console.print(t)
 
     console.print()
     console.rule("[bold]Summary[/bold]")
-    console.print("[dim]All numbers are Strata's own stack on this machine. "
+    console.print("[dim]All numbers are MarkMem's own stack on this machine. "
                   "Competitor numbers are from their published papers/docs.[/dim]")
     console.print("[dim]Retrieval-only = answer-presence proxy, not leaderboard-graded QA.[/dim]")
 
@@ -745,7 +745,7 @@ def print_report(results: dict) -> None:
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
-    ap = argparse.ArgumentParser(description="Strata competitive benchmark suite")
+    ap = argparse.ArgumentParser(description="MarkMem competitive benchmark suite")
     ap.add_argument("--locomo",          type=Path, help="path to locomo10.json")
     ap.add_argument("--download-locomo", action="store_true", help="download LoCoMo first")
     ap.add_argument("--limit",           type=int, default=2,
@@ -754,8 +754,8 @@ def main():
                     help="use NVIDIA LLM for graded QA (needs NVIDIA_API_KEY in .env)")
     ap.add_argument("--skip-latency",    action="store_true")
     ap.add_argument("--skip-locomo",     action="store_true")
-    ap.add_argument("--skip-stratabench", action="store_true",
-                    help="skip Strata's own ground-truth benchmark")
+    ap.add_argument("--skip-markmembench", action="store_true",
+                    help="skip MarkMem's own ground-truth benchmark")
     ap.add_argument("--llm-extract",     action="store_true",
                     help="compile memory with the configured LLM extractor "
                          "(default: deterministic heuristic)")
@@ -768,8 +768,8 @@ def main():
     load_dotenv(".env")
     import os
 
-    console.rule("[bold green]Strata Competitive Benchmark[/bold green]")
-    provider = os.environ.get("STRATA_LLM_PROVIDER")
+    console.rule("[bold green]MarkMem Competitive Benchmark[/bold green]")
+    provider = os.environ.get("MARKMEM_LLM_PROVIDER")
     if provider:
         console.print(f"[yellow]Running benchmarks ONLINE (LLM provider: {provider})[/yellow]")
     else:
@@ -784,10 +784,10 @@ def main():
         # model via NEMOTRON_JUDGE_MODEL; unset -> NemotronClient's own default
         llm = NemotronClient(model=os.environ.get("NEMOTRON_JUDGE_MODEL") or None)
         if not llm.available:
-            console.print("[red]Neither NVIDIA_API_KEY nor AZURE_OPENAI_API_KEY is set — running without LLM grading[/red]")
+            console.print("[red]Neither NVIDIA_API_KEY, AZURE_OPENAI_API_KEY, nor OPENAI_API_KEY is set — running without LLM grading[/red]")
             llm = None
 
-    work_dir = Path(tempfile.mkdtemp(prefix="strata-bench-"))
+    work_dir = Path(tempfile.mkdtemp(prefix="markmem-bench-"))
     results = {}
     t_start = time.perf_counter()
 
@@ -847,10 +847,10 @@ def main():
     console.rule("10. Feature Matrix")
     results["feature_matrix"] = bench_feature_matrix()
 
-    # 11. StrataBench — own ground-truth suite (true R@k)
-    if not args.skip_stratabench:
-        console.rule("11. StrataBench (own ground truth, TRUE R@k)")
-        results["stratabench"] = bench_stratabench(
+    # 11. MarkMemBench — own ground-truth suite (true R@k)
+    if not args.skip_markmembench:
+        console.rule("11. MarkMemBench (own ground truth, TRUE R@k)")
+        results["markmembench"] = bench_markmembench(
             work_dir, llm=llm, llm_extract=args.llm_extract)
 
     total_s = time.perf_counter() - t_start
@@ -858,7 +858,7 @@ def main():
         "total_seconds": round(total_s, 1),
         "with_llm": args.with_llm and llm is not None,
         "pages_for_latency": args.pages,
-        "strata_version": __import__("strata").__version__,
+        "markmem_version": __import__("markmem").__version__,
     }
 
     # Print report

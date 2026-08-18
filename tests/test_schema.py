@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from strata.schema import SchemaError, load_schema, parse_schema
+from markmem.schema import SchemaError, load_schema, parse_schema
 
-TEMPLATE = Path(__file__).parent.parent / "strata" / "templates" / "schema.md"
+TEMPLATE = Path(__file__).parent.parent / "markmem" / "templates" / "schema.md"
 
 
 def test_template_parses():

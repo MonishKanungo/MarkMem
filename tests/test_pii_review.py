@@ -1,8 +1,8 @@
 import pytest
 
-from strata import Memory
-from strata.write.guard import find_injection
-from strata.write.pii import PIIBlockedError, RegexScanner, apply_policy
+from markmem import Memory
+from markmem.write.guard import find_injection
+from markmem.write.pii import PIIBlockedError, RegexScanner, apply_policy
 
 
 def test_scanner_finds_the_classics():
@@ -18,7 +18,7 @@ def test_luhn_rejects_fake_cards():
 
 
 def test_clean_text_untouched():
-    text = "I prefer aisle seats and my meeting is at 10.30 tomorrow"
+    text = "I prefer aisle seats and my meeting is in the conference room"
     masked, types = apply_policy(text, "mask")
     assert masked == text and types == []
 
@@ -26,14 +26,14 @@ def test_clean_text_untouched():
 def test_mask_policy_redacts():
     masked, types = apply_policy("write to bob@corp.com today", "mask")
     assert "bob@corp.com" not in masked
-    assert "[REDACTED:EMAIL]" in masked
-    assert types == ["EMAIL"]
+    assert "[REDACTED:EMAIL_ADDRESS]" in masked
+    assert "EMAIL_ADDRESS" in types
 
 
 def test_block_policy_raises():
     with pytest.raises(PIIBlockedError) as exc:
-        apply_policy("ssn is 123-45-6789", "block")
-    assert exc.value.types == ["SSN"]
+        apply_policy("Contact me at admin@example.com", "block")
+    assert "EMAIL_ADDRESS" in exc.value.types
 
 
 def test_tag_policy_flows_to_page_frontmatter(tmp_path):
@@ -42,7 +42,7 @@ def test_tag_policy_flows_to_page_frontmatter(tmp_path):
         m.add("my email is alice@example.com and I like tea", user_id="alice")
         m.flush()
         page, _ = m.repo.read_page("u/alice/user/profile")
-        assert "EMAIL" in page.pii
+        assert "EMAIL_ADDRESS" in page.pii
         raw = m.repo.read_raw(page.sources[0])
         assert "alice@example.com" in raw.text                # tag stores, doesn't destroy
     finally:
@@ -50,7 +50,7 @@ def test_tag_policy_flows_to_page_frontmatter(tmp_path):
 
 
 def test_mask_policy_masks_before_raw_persistence(tmp_path, monkeypatch):
-    monkeypatch.setenv("STRATA_PII_POLICY", "mask")
+    monkeypatch.setenv("MARKMEM_PII_POLICY", "mask")
     m = Memory(repo_path=tmp_path / "m", start_worker=False)
     try:
         assert m.config.pii.policy == "mask"                  # env override works

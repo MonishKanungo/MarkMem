@@ -1,7 +1,7 @@
-"""Strata + FastAPI — production memory-augmented REST chatbot.
+"""MarkMem + FastAPI — production memory-augmented REST chatbot.
 
 Install:
-    pip install strata-memory fastapi uvicorn openai
+    pip install markmem fastapi uvicorn openai
 
 Run:
     uvicorn examples.fastapi_app:app --reload
@@ -17,7 +17,7 @@ from typing import Optional
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from strata import Memory
+from markmem import Memory
 
 # Shared memory instance — created once at startup
 _memory: Optional[Memory] = None
