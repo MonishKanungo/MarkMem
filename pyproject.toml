@@ -38,10 +38,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/MonishKanungo/markmem"
-Documentation = "https://github.com/MonishKanungo/markmem#readme"
-Repository = "https://github.com/MonishKanungo/markmem"
-"Bug Tracker" = "https://github.com/MonishKanungo/markmem/issues"
+Homepage = "https://github.com/MonishKanungo/MarkMem"
+Documentation = "https://github.com/MonishKanungo/MarkMem#readme"
+Repository = "https://github.com/MonishKanungo/MarkMem"
+"Bug Tracker" = "https://github.com/MonishKanungo/MarkMem/issues"
 
 [project.optional-dependencies]
 llm = ["anthropic>=0.40.0", "openai>=1.0.0"]
