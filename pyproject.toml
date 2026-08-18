@@ -4,9 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "markmem"
-version = "0.4.1"
+version = "0.4.2"
 authors = [
-  { name = "Monish Kanungo", email = "monishkanungo23@gmail.com" },
+  { name = "Monish Kanungo", email = "monishkanungo23@gmail.com" }
+]
+maintainers = [
   { name = "Achintya Vaidyanathan", email = "achintya.vaidyanathank@gmail.com" }
 ]
 description = "Git-native, Markdown-based memory layer for AI agents. Features bi-temporal fact ledgering, compliance-grade erasure, PII gating, hybrid search, and MCP integration."
