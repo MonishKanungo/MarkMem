@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="image.png" alt="MarkMem Logo" width="800" />
+  <img src="https://raw.githubusercontent.com/MonishKanungo/MarkMem/main/image.png" alt="MarkMem Logo" width="800" />
 </p>
 
-<h1 align="center">🧠 MarkMem</h1>
+<h1 align="center">MarkMem</h1>
 
 <p align="center">
   <strong>A memory layer for chatbots that stores memory as plain markdown in a git repo.</strong>
 </p>
 
 <p align="center">
-  <a href="https://badge.fury.io/py/markmem"><img src="https://badge.fury.io/py/markmem.svg" alt="PyPI version" /></a>
+  <a href="https://pypi.org/project/markmem/"><img src="https://img.shields.io/pypi/v/markmem.svg" alt="PyPI version" /></a>
   <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License" /></a>
   <a href="https://pypi.org/project/markmem/"><img src="https://img.shields.io/pypi/pyversions/markmem.svg" alt="Python Versions" /></a>
 </p>
