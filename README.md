@@ -1,4 +1,5 @@
 <div align="center">
+![alt text](image.png)
 
 # 🧠 MarkMem
 
