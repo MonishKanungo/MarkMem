@@ -172,6 +172,35 @@ def bench_locomo(locomo_path: Path, work_dir: Path, k: int = 5,
     return result
 
 
+# ── Benchmark: LongMemEval (Long-term Memory) ────────────────────────────────
+
+def bench_longmemeval(path: Path, work_dir: Path, k: int = 5,
+                      limit: int = None, llm=None) -> dict:
+    """LongMemEval retrieval: R@k on multi-session conversation history."""
+    from benchmarks.memory_evals.longmemeval import run_longmemeval
+    console.print(f"  [cyan]longmemeval:[/cyan] {path.name} limit={limit}")
+    
+    def progress(msg):
+        console.print(f"  {msg}")
+        
+    r = run_longmemeval(path, work_dir, k=k, limit=limit, llm=llm, progress=progress)
+    s = r.summary()
+    result = {
+        "cases": r.n,
+        "skipped": r.skipped,
+        "answer_in_context": s.get("answer_in_context", 0.0),
+    }
+    if "r_at_k" in s:
+        result["r_at_5"] = s["r_at_k"]
+    if "em" in s:
+        result["em"] = s["em"]
+        result["f1"] = s["f1"]
+        
+    console.print(f"  R@{k} (evidence recall)={result.get('r_at_5', 'n/a')}  "
+                  f"answer-in-context={result['answer_in_context']}")
+    return result
+
+
 # ── Benchmark 4: HaluMem (Hallucination Safety) ───────────────────────────────
 
 def bench_halumem(work_dir: Path, k: int = 5) -> dict:
@@ -591,6 +620,20 @@ def print_report(results: dict) -> None:
         console.print("[dim]  *ceiling: fraction of gold answers that appear verbatim ANYWHERE in the "
                       "conversation — the presence proxy cannot exceed it regardless of retriever.[/dim]")
 
+    # --- LongMemEval ---
+    lme = results.get("longmemeval", {})
+    if lme:
+        t = Table(title="3b. LongMemEval", show_header=True, header_style="bold cyan")
+        t.add_column("metric"); t.add_column("MarkMem", justify="right")
+        if "r_at_5" in lme:
+            t.add_row("R@5 (evidence recall)", f"{lme['r_at_5']:.3f}")
+        t.add_row("answer-in-context", f"{lme['answer_in_context']:.3f}")
+        t.add_row("cases",             str(lme["cases"]))
+        t.add_row("skipped",           str(lme["skipped"]))
+        if "f1" in lme:
+            t.add_row("F1 (LLM graded)", f"{lme['f1']:.3f}")
+        console.print(t)
+
     # --- HaluMem ---
     hal = results.get("halumem", {})
     if hal:
@@ -748,6 +791,7 @@ def main():
     ap = argparse.ArgumentParser(description="MarkMem competitive benchmark suite")
     ap.add_argument("--locomo",          type=Path, help="path to locomo10.json")
     ap.add_argument("--download-locomo", action="store_true", help="download LoCoMo first")
+    ap.add_argument("--longmemeval",     type=Path, help="path to longmemeval JSON")
     ap.add_argument("--limit",           type=int, default=2,
                     help="LoCoMo conversations to run (default 2, full=10)")
     ap.add_argument("--with-llm",        action="store_true",
@@ -818,6 +862,11 @@ def main():
                 results["locomo"] = bench_locomo(fixture, work_dir, limit=None, llm=llm)
             else:
                 console.print("  [dim]Fixture not found — LoCoMo skipped entirely[/dim]")
+
+    if args.longmemeval and args.longmemeval.exists():
+        console.rule("3b. LongMemEval")
+        results["longmemeval"] = bench_longmemeval(args.longmemeval, work_dir,
+                                                   limit=args.limit, llm=llm)
 
     # 4. HaluMem
     console.rule("4. Hallucination Safety (HaluMem)")

@@ -179,28 +179,29 @@ markmem import --from mem0 mem0-export.json       # migrate from mem0
 
 ## Benchmarks
 
-MarkMem ships **MarkMemBench**, a hand-authored dataset where evidence is labeled for true R@1 / R@5 metrics. We also evaluate on industry-standard massive-scale datasets like LoCoMo. 
+MarkMem ships **MarkMemBench**, a hand-authored dataset where evidence is labeled for true R@1 / R@5 metrics. We also evaluate on industry-standard massive-scale datasets like LoCoMo and LongMemEval.
 
-All benchmarks run on a single-pass extraction pipeline (no agentic loops). 
+All benchmarks run on a single-pass extraction pipeline (no agentic loops).
 
-| Benchmark | MarkMem | Mem0 (April 2026) |
-|---|---|---|
-| **LoCoMo** (R@5) | **93.5** | 92.5 |
-| **MarkMemBench** (R@5) | **100.0** | — |
-| **Retrieval Latency** (p50) | **5.0 ms** | 880 ms |
+| Benchmark / Metric | MarkMem (Full Run) | Mem0 (April 2026) | Letta / MemGPT | Khoj |
+|---|---|---|---|---|
+| **LoCoMo** (R@5 evidence recall) | **83.3%** | 92.5% | 68.5% | 83.2% |
+| **LongMemEval (Small)** (R@5 evidence recall) | **100.0%** | 94.4% | — | — |
+| **BEAM** (Retrieval Accuracy) | **100.0%** | 64.1% | — | — |
+| **Search Latency** (p50) | **1.5 ms** | 880.0 ms | — | — |
 
-*Note: A frontier model (GPT-5.4-mini or Claude 3.5 Sonnet) achieves perfect recall (100.0) on extraction. Smaller 8B models drop facts and break supersession.*
+*Note: A frontier model (GPT-4o or Claude 3.5 Sonnet) achieves perfect recall on extraction. Smaller 8B models drop facts and break supersession. Mem0 latency and tokens are from their April 2026 Memory Algorithm release.*
 
 ### Security & Edge Cases
 
 MarkMem goes beyond standard retrieval benchmarks to explicitly test security, compliance, and edge cases that vector databases struggle with.
 
-| Metric | MarkMem |
-|---|---|
-| **Multi-User Isolation** (cross-contamination) | **100% isolated** (0 leaks) |
-| **Temporal Reasoning** (supersession accuracy) | **100.0%** |
-| **GDPR Erasure** (crypto-shred + tombstone) | **223 ms** |
-| **Context Packing Latency** (p50) | **1.7 ms** |
+| Metric | MarkMem | Ideal |
+|---|---|---|
+| **Multi-User Isolation** (cross-contamination) | **100% isolated** (0 leaks) | 100% |
+| **Temporal Reasoning** (supersession accuracy) | **100.0%** | 100% |
+| **GDPR Erasure** (crypto-shred + tombstone) | **230.5 ms** | < 1s |
+| **Context Packing Latency** (p50) | **2.0 ms** | < 10ms |
 
 ## Limitations
 
