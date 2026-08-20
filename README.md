@@ -1,17 +1,22 @@
-<div align="center">
-![alt text](image.png)
+<p align="center">
+  <img src="image.png" alt="MarkMem Logo" width="800" />
+</p>
 
-# 🧠 MarkMem
+<h1 align="center">🧠 MarkMem</h1>
 
-**A memory layer for chatbots that stores memory as plain markdown in a git repo.**
+<p align="center">
+  <strong>A memory layer for chatbots that stores memory as plain markdown in a git repo.</strong>
+</p>
 
-[![PyPI version](https://badge.fury.io/py/markmem.svg)](https://badge.fury.io/py/markmem)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Python Versions](https://img.shields.io/pypi/pyversions/markmem.svg)](https://pypi.org/project/markmem/)
+<p align="center">
+  <a href="https://badge.fury.io/py/markmem"><img src="https://badge.fury.io/py/markmem.svg" alt="PyPI version" /></a>
+  <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License" /></a>
+  <a href="https://pypi.org/project/markmem/"><img src="https://img.shields.io/pypi/pyversions/markmem.svg" alt="Python Versions" /></a>
+</p>
 
-[Installation](#installation) • [Quick Start](#quick-start) • [Key Features](#key-features) • [How it Works](#how-it-works) • [API](#api)
-
-</div>
+<p align="center">
+  <a href="#installation">Installation</a> • <a href="#quick-start">Quick Start</a> • <a href="#key-features">Key Features</a> • <a href="#how-it-works">How it Works</a> • <a href="#api">API</a>
+</p>
 
 ## What is MarkMem?
 
