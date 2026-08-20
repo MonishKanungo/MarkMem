@@ -180,18 +180,16 @@ markmem import --from mem0 mem0-export.json       # migrate from mem0
 
 ## Benchmarks
 
-MarkMem ships **MarkMemBench**, a hand-authored dataset where evidence is labeled for true R@1 / R@5 metrics. We also evaluate on industry-standard massive-scale datasets like LoCoMo and LongMemEval.
+MarkMem ships **MarkMemBench**, a hand-authored dataset where evidence is labeled for true R@1 / R@5 metrics. We also evaluate on industry-standard massive-scale datasets like LoCoMo
 
 All benchmarks run on a single-pass extraction pipeline (no agentic loops).
 
 | Benchmark / Metric | MarkMem (Full Run) | Mem0 (April 2026) | Letta / MemGPT | Khoj |
 |---|---|---|---|---|
 | **LoCoMo** (R@5 evidence recall) | **83.3%** | 92.5% | 68.5% | 83.2% |
-| **LongMemEval (Small)** (R@5 evidence recall) | **100.0%** | 94.4% | — | — |
-| **BEAM** (Retrieval Accuracy) | **100.0%** | 64.1% | — | — |
 | **Search Latency** (p50) | **1.5 ms** | 880.0 ms | — | — |
 
-*Note: A frontier model (GPT-4o or Claude 3.5 Sonnet) achieves perfect recall on extraction. Smaller 8B models drop facts and break supersession. Mem0 latency and tokens are from their April 2026 Memory Algorithm release.*
+
 
 ### Security & Edge Cases
 
